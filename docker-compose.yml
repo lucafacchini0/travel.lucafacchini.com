@@ -19,7 +19,8 @@ services:
     container_name: blog_php
     volumes:
       - ./src:/var/www/html
-      - ./.env:/var/www/html/.env  # Mount the .env file
+    env_file:
+      - .env  
     networks:
       - blog_network
     command: >
