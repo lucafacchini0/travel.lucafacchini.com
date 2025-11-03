@@ -1,14 +1,5 @@
 <?php
 require_once 'config.php'; // Connect to database
-
-// Recupera tutti i post
-try {
-    $stmt = $pdo->query("SELECT * FROM posts ORDER BY created_at DESC");
-    $posts = $stmt->fetchAll();
-} catch (PDOException $e) {
-    $posts = [];
-    $error = "Error while loading posts.";
-}
 ?>
 
 <!DOCTYPE html>
@@ -23,16 +14,16 @@ try {
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">
-                <h1>Luca Facchini</h1>
-                <span class="tagline">Travel Blog</span>
+            <div class="navbar-logo">
+                <img src="https://via.placeholder.com/40x40?text=LF" alt="Logo">
             </div>
-            <ul class="nav-menu">
+            <ul class="navbar-menu">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#destinations">Destinations</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <a href="#login" class="navbar-login">Login</a>
         </div>
     </nav>
 
@@ -43,78 +34,37 @@ try {
     </section>
 
     <!-- Posts Grid -->
+
+    <?php
+    try {
+        $query = $pdo->query("SELECT * FROM posts ORDER BY created_at DESC");
+        $posts = $query->fetchAll();
+    } catch (PDOException $e) {
+        $posts = [];
+        $error = "Error while loading posts.";
+    }
+    ?>
+
     <section class="posts-container">
-        <div class="post-card" onclick="window.location.href='post.html?id=1'">
-            <div class="card-image">
-                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600" alt="Paris">
-            </div>
-            <div class="card-content">
-                <h3>A Weekend in Paris</h3>
-                <p class="post-date">October 15, 2025</p>
-                <p class="post-excerpt">Exploring the city of lights, from the Eiffel Tower to hidden cafés in Montmartre...</p>
-                <span class="read-more">Read More →</span>
-            </div>
-        </div>
+        <?php if(!empty($posts)): ?>
+            <?php foreach($posts as $post): ?>
 
-        <div class="post-card" onclick="window.location.href='post.html?id=2'">
-            <div class="card-image">
-                <img src="https://images.unsplash.com/photo-1513581166391-887a96ddeafd?w=600" alt="London">
+            <div class="post-card">
+                <div class="card-image">
+                    <img src="<?= htmlspecialchars($post['thumbnail']) ?>" alt="<?= htmlspecialchars($post['title']) ?>">
+                </div>
+                <div class="card-content">
+                    <h3><?= htmlspecialchars($post['title']) ?></h3>
+                    <p class="post-date"><?= htmlspecialchars($post['published_on']) ?></p>
+                    <p class="post-description"><?= htmlspecialchars($post['description']) ?></p>
+                    <span class="read-more">Read More →</span> <? // not sure how to do it yet. ?>
+                </div>
             </div>
-            <div class="card-content">
-                <h3>London Adventures</h3>
-                <p class="post-date">September 28, 2025</p>
-                <p class="post-excerpt">From the British Museum to Camden Market, discovering the vibrant culture of London...</p>
-                <span class="read-more">Read More →</span>
-            </div>
-        </div>
 
-        <div class="post-card" onclick="window.location.href='post.html?id=3'">
-            <div class="card-image">
-                <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600" alt="Barcelona">
-            </div>
-            <div class="card-content">
-                <h3>Barcelona by the Sea</h3>
-                <p class="post-date">August 12, 2025</p>
-                <p class="post-excerpt">Sun, sand, and Gaudí's masterpieces - Barcelona has it all...</p>
-                <span class="read-more">Read More →</span>
-            </div>
-        </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-        <div class="post-card" onclick="window.location.href='post.html?id=4'">
-            <div class="card-image">
-                <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=600" alt="Rome">
-            </div>
-            <div class="card-content">
-                <h3>The Eternal City: Rome</h3>
-                <p class="post-date">July 5, 2025</p>
-                <p class="post-excerpt">Walking through history in the streets of ancient Rome...</p>
-                <span class="read-more">Read More →</span>
-            </div>
-        </div>
-
-        <div class="post-card" onclick="window.location.href='post.html?id=5'">
-            <div class="card-image">
-                <img src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600" alt="Tokyo">
-            </div>
-            <div class="card-content">
-                <h3>Tokyo: Where Tradition Meets Future</h3>
-                <p class="post-date">June 20, 2025</p>
-                <p class="post-excerpt">From ancient temples to neon-lit streets, Tokyo is a city of contrasts...</p>
-                <span class="read-more">Read More →</span>
-            </div>
-        </div>
-
-        <div class="post-card" onclick="window.location.href='post.html?id=6'">
-            <div class="card-image">
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600" alt="Iceland">
-            </div>
-            <div class="card-content">
-                <h3>Iceland's Natural Wonders</h3>
-                <p class="post-date">May 10, 2025</p>
-                <p class="post-excerpt">Chasing waterfalls and northern lights in the land of fire and ice...</p>
-                <span class="read-more">Read More →</span>
-            </div>
-        </div>
+      
     </section>
 
     <!-- Footer -->
