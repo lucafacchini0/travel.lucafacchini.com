@@ -1,5 +1,8 @@
--- Database Draft - 1.3
+----------------------------------------------------
 
+              -- DATABASE STRUCTURE --
+
+----------------------------------------------------          
 CREATE TABLE IF NOT EXISTS countries (
     id_country INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(64) NOT NULL UNIQUE 
@@ -139,3 +142,84 @@ CREATE TABLE IF NOT EXISTS comments (
         ON UPDATE CASCADE 
         ON DELETE CASCADE 
 );
+
+
+----------------------------------------------------
+
+        -- DEVELOPMENT EXAMPLE ENTRIE(S) --
+
+----------------------------------------------------     
+
+-- === COUNTRIES ===
+INSERT INTO countries (name)
+VALUES 
+    ('Italy'),
+    ('Switzerland'),
+    ('Germany');
+
+-- === PLACES ===
+INSERT INTO places (id_country, name, description)
+VALUES 
+    (1, 'Milan', 'Modern city known for fashion and design.'),
+    (2, 'Zurich', 'Financial hub surrounded by the Alps.'),
+    (3, 'Berlin', 'Capital of Germany, rich in history.');
+
+-- === COLORS ===
+INSERT INTO colors (name)
+VALUES 
+    ('Red'),
+    ('Green'),
+    ('Blue'),
+    ('Yellow');
+
+-- === TAGS ===
+INSERT INTO tags (name, id_color)
+VALUES 
+    ('Travel', 1),
+    ('Nature', 2),
+    ('City', 3),
+    ('Culture', 4);
+
+-- === USERS ===
+INSERT INTO users (nickname, email, password, role, name, surname, id_country, bio, profile_picture)
+VALUES
+    ('admin', 'admin@example.com', 'admin12345', 'admin', 'Admin', 'User', 1, 'System administrator.', NULL),
+    ('luca', 'luca@example.com', 'password123', 'user', 'Luca', 'Bianchi', 1, 'Hi! I love coding, Linux, and cybersecurity.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png'),
+    ('anna', 'anna@example.com', 'strongpass', 'user', 'Anna', 'Rossi', 2, 'Traveler and photographer.', NULL);
+
+-- === POSTS ===
+INSERT INTO posts (author, id_place, title, date, description, thumbnail)
+VALUES
+    ('luca', 2, 'A Day in Zurich', '2025-11-03', 'Exploring Zurich, its lakes, and Swiss architecture.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png'),
+    ('anna', 1, 'Weekend in Milan', '2025-11-01', 'Best cafes and design spots in Milan.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png');
+
+-- === CATEGORIES ===
+INSERT INTO categories (name)
+VALUES 
+    ('Travel Guide'),
+    ('Lifestyle'),
+    ('Technology');
+
+-- === POSTS_CATEGORIES ===
+INSERT INTO posts_categories (id_category, id_post)
+VALUES
+    (1, 1), -- A Day in Zurich → Travel Guide
+    (2, 2); -- Weekend in Milan → Lifestyle
+
+-- === POSTS_TAGS ===
+INSERT INTO posts_tags (id_tag, id_post)
+VALUES
+    (1, 1), -- Zurich → Travel
+    (3, 2); -- Milan → City
+
+-- === LIKES_POSTS ===
+INSERT INTO likes_posts (nickname, id_post, date)
+VALUES
+    ('anna', 1, '2025-11-03'),
+    ('luca', 2, '2025-11-02');
+
+-- === COMMENTS ===
+INSERT INTO comments (nickname, id_post, content, date)
+VALUES
+    ('anna', 1, 'Beautiful photos, Luca!', '2025-11-03'),
+    ('luca', 2, 'Milan never disappoints!', '2025-11-02');
