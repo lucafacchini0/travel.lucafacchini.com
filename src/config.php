@@ -1,13 +1,16 @@
 <?php
-// Load environment variables from .env file
-$env = parse_ini_file('.env');
+// Load environment variables from container environment
+// (Docker loads these from the .env file via env_file directive)
+$host = getenv('DB_HOST');
+$db   = getenv('DB_NAME');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
+$charset = getenv('DB_CHARSET') ?: 'utf8mb4';
 
-// Connect to database
-$host = $env['DB_HOST'];
-$db   = $env['DB_NAME'];
-$user = $env['DB_USER'];
-$pass = $env['DB_PASS'];
-$charset = $env['DB_CHARSET'];
+// Validate that all required variables are set
+if (!$host || !$db || !$user || !$pass) {
+    die('Error: Missing required database configuration. Ensure .env file is loaded in container.');
+}
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
