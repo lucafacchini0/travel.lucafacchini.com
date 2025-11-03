@@ -1,4 +1,4 @@
--- Database Draft - 1.0
+-- Database Draft - 1.1
 
 CREATE TABLE IF NOT EXISTS countries (
     id_country INT PRIMARY KEY AUTO_INCREMENT,
@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS places (
     description TEXT,
 
     FOREIGN KEY (id_country) REFERENCES countries(id_country)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS colors (
@@ -25,6 +27,8 @@ CREATE TABLE IF NOT EXISTS tags (
     id_color INT NOT NULL,
 
     FOREIGN KEY (id_color) REFERENCES colors(id_color)
+        ON UPDATE CASCADE, 
+        ON DELETE SET DEFAULT
 );
 
 CREATE TABLE IF NOT EXISTS posts_tags (
@@ -32,8 +36,13 @@ CREATE TABLE IF NOT EXISTS posts_tags (
     id_tag INT,
     id_post INT,
 
-    FOREIGN KEY (id_tag) REFERENCES tags(id_tag),
+    FOREIGN KEY (id_tag) REFERENCES tags(id_tag)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL, 
+
     FOREIGN KEY (id_post) REFERENCES posts(id_post)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -61,8 +70,13 @@ CREATE TABLE IF NOT EXISTS posts (
     description TEXT,
     thumbnail VARCHAR(1024),
 
-    FOREIGN KEY (author) REFERENCES users(nickname),
+    FOREIGN KEY (author) REFERENCES users(nickname)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL, -- Set as "unknown" 
+
     FOREIGN KEY (id_place) REFERENCES places(id_place)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -75,8 +89,13 @@ CREATE TABLE IF NOT EXISTS posts_categories (
     id_category INT NOT NULL,
     id_post INT NOT NULL,
 
-    FOREIGN KEY (id_category) REFERENCES categories(id_category),
+    FOREIGN KEY (id_category) REFERENCES categories(id_category)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION -- ???????
+
     FOREIGN KEY (id_post) REFERENCES posts(id_post)
+        ON UPDATE CASCADE,
+        ON DELETE NO ACTION -- ?????
 );
 
 CREATE TABLE IF NOT EXISTS likes_posts (
@@ -85,8 +104,13 @@ CREATE TABLE IF NOT EXISTS likes_posts (
     id_post INT,
     date DATE NOT NULL,
 
-    FOREIGN KEY (nickname) REFERENCES users(nickname),
+    FOREIGN KEY (nickname) REFERENCES users(nickname)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,  -- ???????
+
     FOREIGN KEY (id_post) REFERENCES posts(id_post)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION -- ???????
 );
 
 CREATE TABLE IF NOT EXISTS comments (
@@ -96,6 +120,10 @@ CREATE TABLE IF NOT EXISTS comments (
     content TEXT NOT NULL,
     date DATE NOT NULL,
     
-    FOREIGN KEY (nickname) REFERENCES users(nickname),
+    FOREIGN KEY (nickname) REFERENCES users(nickname)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION, -- ???????
     FOREIGN KEY (id_post) REFERENCES posts(id_post)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION -- ???????
 );
