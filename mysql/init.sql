@@ -1,8 +1,10 @@
-----------------------------------------------------
+-- Database is created automatically by Docker Compose
+USE blog;
 
-              -- DATABASE STRUCTURE --
+-- ====================================================
+--               DATABASE STRUCTURE
+-- ====================================================
 
-----------------------------------------------------          
 CREATE TABLE IF NOT EXISTS countries (
     id_country INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(64) NOT NULL UNIQUE 
@@ -144,11 +146,9 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 
-----------------------------------------------------
-
-        -- DEVELOPMENT EXAMPLE ENTRIE(S) --
-
-----------------------------------------------------     
+-- ====================================================
+--         DEVELOPMENT EXAMPLE ENTRIE(S)
+-- ====================================================
 
 -- === COUNTRIES ===
 INSERT INTO countries (name)
@@ -188,7 +188,7 @@ VALUES
     ('anna', 'anna@example.com', 'strongpass', 'user', 'Anna', 'Rossi', 2, 'Traveler and photographer.', NULL);
 
 -- === POSTS ===
-INSERT INTO posts (author, id_place, title, date, description, thumbnail)
+INSERT INTO posts (author, id_place, title, published_on, description, thumbnail)
 VALUES
     ('luca', 2, 'A Day in Zurich', '2025-11-03', 'Exploring Zurich, its lakes, and Swiss architecture.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png'),
     ('anna', 1, 'Weekend in Milan', '2025-11-01', 'Best cafes and design spots in Milan.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png');
@@ -203,14 +203,14 @@ VALUES
 -- === POSTS_CATEGORIES ===
 INSERT INTO posts_categories (id_category, id_post)
 VALUES
-    (1, 1), -- A Day in Zurich → Travel Guide
-    (2, 2); -- Weekend in Milan → Lifestyle
+    (1, 1),
+    (2, 2);
 
 -- === POSTS_TAGS ===
 INSERT INTO posts_tags (id_tag, id_post)
 VALUES
-    (1, 1), -- Zurich → Travel
-    (3, 2); -- Milan → City
+    (1, 1),
+    (3, 2);
 
 -- === LIKES_POSTS ===
 INSERT INTO likes_posts (nickname, id_post, date)
