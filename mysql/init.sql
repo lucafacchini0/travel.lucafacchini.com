@@ -1,4 +1,4 @@
--- Database Draft - 1.1
+-- Database Draft - 1.2
 
 CREATE TABLE IF NOT EXISTS countries (
     id_country INT PRIMARY KEY AUTO_INCREMENT,
@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS places (
     id_country INT,
     name VARCHAR(128) NOT NULL,
     description TEXT,
-
     FOREIGN KEY (id_country) REFERENCES countries(id_country)
         ON UPDATE CASCADE
         ON DELETE SET NULL
@@ -25,24 +24,9 @@ CREATE TABLE IF NOT EXISTS tags (
     id_tag INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(64) NOT NULL,
     id_color INT NOT NULL,
-
     FOREIGN KEY (id_color) REFERENCES colors(id_color)
-        ON UPDATE CASCADE, 
-        ON DELETE SET DEFAULT
-);
-
-CREATE TABLE IF NOT EXISTS posts_tags (
-    id_post_tag INT PRIMARY KEY AUTO_INCREMENT,
-    id_tag INT,
-    id_post INT,
-
-    FOREIGN KEY (id_tag) REFERENCES tags(id_tag)
         ON UPDATE CASCADE
-        ON DELETE SET NULL, 
-
-    FOREIGN KEY (id_post) REFERENCES posts(id_post)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
+        ON DELETE NO ACTION,
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -55,9 +39,8 @@ CREATE TABLE IF NOT EXISTS users (
     id_country INT,
     bio TEXT,
     profile_picture VARCHAR(1024),
-
-    FOREIGN KEY (id_country) REFERENCES countries(id_country) 
-        ON UPDATE CASCADE 
+    FOREIGN KEY (id_country) REFERENCES countries(id_country)
+        ON UPDATE CASCADE
         ON DELETE SET NULL
 );
 
@@ -69,11 +52,9 @@ CREATE TABLE IF NOT EXISTS posts (
     date DATE NOT NULL,
     description TEXT,
     thumbnail VARCHAR(1024),
-
     FOREIGN KEY (author) REFERENCES users(nickname)
         ON UPDATE CASCADE
-        ON DELETE SET NULL, -- Set as "unknown" 
-
+        ON DELETE SET NULL,
     FOREIGN KEY (id_place) REFERENCES places(id_place)
         ON UPDATE CASCADE
         ON DELETE SET NULL
@@ -88,14 +69,24 @@ CREATE TABLE IF NOT EXISTS posts_categories (
     id_post_category INT PRIMARY KEY AUTO_INCREMENT,
     id_category INT NOT NULL,
     id_post INT NOT NULL,
-
     FOREIGN KEY (id_category) REFERENCES categories(id_category)
         ON UPDATE CASCADE
-        ON DELETE NO ACTION -- ???????
-
+        ON DELETE CASCADE, 
     FOREIGN KEY (id_post) REFERENCES posts(id_post)
-        ON UPDATE CASCADE,
-        ON DELETE NO ACTION -- ?????
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS posts_tags (
+    id_post_tag INT PRIMARY KEY AUTO_INCREMENT,
+    id_tag INT,
+    id_post INT,
+    FOREIGN KEY (id_tag) REFERENCES tags(id_tag)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE, 
+    FOREIGN KEY (id_post) REFERENCES posts(id_post)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE 
 );
 
 CREATE TABLE IF NOT EXISTS likes_posts (
@@ -103,14 +94,12 @@ CREATE TABLE IF NOT EXISTS likes_posts (
     nickname VARCHAR(32),
     id_post INT,
     date DATE NOT NULL,
-
     FOREIGN KEY (nickname) REFERENCES users(nickname)
         ON UPDATE CASCADE
-        ON DELETE NO ACTION,  -- ???????
-
+        ON DELETE CASCADE, 
     FOREIGN KEY (id_post) REFERENCES posts(id_post)
         ON UPDATE CASCADE
-        ON DELETE NO ACTION -- ???????
+        ON DELETE CASCADE 
 );
 
 CREATE TABLE IF NOT EXISTS comments (
@@ -119,11 +108,10 @@ CREATE TABLE IF NOT EXISTS comments (
     id_post INT NOT NULL,
     content TEXT NOT NULL,
     date DATE NOT NULL,
-    
     FOREIGN KEY (nickname) REFERENCES users(nickname)
         ON UPDATE CASCADE
-        ON DELETE NO ACTION, -- ???????
+        ON DELETE CASCADE, 
     FOREIGN KEY (id_post) REFERENCES posts(id_post)
         ON UPDATE CASCADE
-        ON DELETE NO ACTION -- ???????
+        ON DELETE CASCADE 
 );
