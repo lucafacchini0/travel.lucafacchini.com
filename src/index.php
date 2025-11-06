@@ -1,30 +1,10 @@
 <?php
 require_once 'includes/fetch_posts.php';
-require_once 'includes/header.php';
 ?>
 
-<!-- Hero Section -->
-<div class="hero">
-    <h1><span class="icon">🏛️</span> Lorem Ipsum</h1>
-    <p>Explore bla bla bla</p>
-    <div class="search-bar">
-        <input type="text" placeholder="Search destinations, places, tags...">
-        <button class="search-btn">🔍 Search</button>
-    </div>
-</div>
-
-<!-- Filters -->
-<div class="filters-wrapper">
-    <div class="filters">
-        <select><option>Tutte le regioni</option></select>
-        <select><option>Tutte le province</option></select>
-        <select><option>Tutti i tag</option></select>
-        <button class="filter-btn">🔽 Applica Filtri</button>
-        <button class="other-filters">≡ Altri filtri</button>
-        <span style="margin-left: auto; color: #718096; font-size: 14px;">Ordina per:</span>
-        <select><option>Rating</option></select>
-    </div>
-</div>
+<?php require_once 'includes/header.php'; ?>
+<?php require_once 'includes/hero.php'; ?>
+<?php require_once 'includes/filters.php'; ?>
 
 <!-- Main Content -->
 <div class="container">
@@ -41,28 +21,41 @@ require_once 'includes/header.php';
         </div>
     </div>
 
-    <div class="cards-grid">
-        <?php if(!empty($posts)): ?>
-            <?php foreach($posts as $post): ?>
-                <div class="card">
-                    <div class="card-image">
-                        <img src="<?php echo htmlspecialchars($post['thumbnail']) ?>" alt="<?php echo htmlspecialchars($post['thumbnail_alt']) ?>">
-                        <div class="rating">Soon</div>
+   <div class="cards-grid">
+    <?php if(!empty($posts)): ?>
+        <?php foreach($posts as $post): ?>
+            <div class="card">
+                <div class="card-image">
+                    <img src="<?php echo htmlspecialchars($post['thumbnail']) ?>" alt="<?php echo htmlspecialchars($post['thumbnail_alt']) ?>">
+                    <div class="rating">Soon</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title"><?php echo htmlspecialchars($post['title']) ?></h3>
+                    <div class="card-location"><?php echo htmlspecialchars($post['place_name'] ?? ''); ?></div>
+                    <p class="card-description"><?php echo htmlspecialchars($post['description']); ?></p>
+
+                    <!-- Tags -->
+                    <div class="card-tags">
+                        <?php if (!empty($tags_by_post[$post['id_post']])): ?>
+                            <?php foreach ($tags_by_post[$post['id_post']] as $tag): ?>
+                                <span class="tag" style="background-color: <?php echo strtolower($tag['color']); ?>;">
+                                    <?php echo htmlspecialchars($tag['name']); ?>
+                                </span>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <span class="tag tag-empty">No tags</span>
+                        <?php endif; ?>
                     </div>
-                    <div class="card-content">
-                        <h3 class="card-title"><?php echo htmlspecialchars($post['title']) ?></h3>
-                        <div class="card-location">address</div>
-                        <p class="card-description"><?php echo htmlspecialchars($post['description']) ?></p>
-                        <div class="card-tags">Tags qui</div>
-                        <div class="card-footer">
-                            <span class="price">Example</span>
-                            <button class="details-btn">Details →</button>
-                        </div>
+
+                    <div class="card-footer">
+                        <span class="price"><?php echo htmlspecialchars($post['author']) ?></span>
+                        <button class="details-btn">Details →</button>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
 </div>
 
 <?php require_once 'includes/footer.php'; ?>
