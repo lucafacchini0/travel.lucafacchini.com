@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php'; // Connect to database
+require_once 'includes/config.php'; // Connect to database
 ?>
 
 <!DOCTYPE html>
