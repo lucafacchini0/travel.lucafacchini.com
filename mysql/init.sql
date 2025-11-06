@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS places (
     id_country INT,
     name VARCHAR(128) NOT NULL,
     description TEXT,
+    score INT DEFAULT 5,
 
     FOREIGN KEY (id_country) REFERENCES countries(id_country)
         ON UPDATE CASCADE
@@ -65,6 +66,7 @@ CREATE TABLE IF NOT EXISTS posts (
     published_on DATE NOT NULL,
     description TEXT,
     thumbnail VARCHAR(1024),
+    thumbnail_alt VARCHAR(128),
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
