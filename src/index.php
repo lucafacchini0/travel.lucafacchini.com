@@ -1,5 +1,7 @@
 <?php
 require_once 'includes/fetch_posts.php';
+
+// Imports: $posts
 ?>
 
 <?php require_once 'includes/header.php'; ?>
@@ -23,7 +25,7 @@ require_once 'includes/fetch_posts.php';
 
    <div class="cards-grid">
     <?php if(!empty($posts)): ?>
-        <?php foreach($posts as $post): ?>
+        <?php foreach($posts as $post): // $posts is taken from includes/fetch_posts.php ?>
             <div class="card">
                 <div class="card-image">
                     <img src="<?php echo htmlspecialchars($post['thumbnail']) ?>" alt="<?php echo htmlspecialchars($post['thumbnail_alt']) ?>">
@@ -31,25 +33,17 @@ require_once 'includes/fetch_posts.php';
                 </div>
                 <div class="card-content">
                     <h3 class="card-title"><?php echo htmlspecialchars($post['title']) ?></h3>
-                    <div class="card-location"><?php echo htmlspecialchars($post['place_name'] ?? ''); ?></div>
+                    <div class="card-location">Written by <img class="profile-picture" src="<?php echo htmlspecialchars($post['profile_picture']); ?>" alt="<?php echo htmlspecialchars($post['author']); ?>"> <?php echo htmlspecialchars($post['author']); ?></div>
                     <p class="card-description"><?php echo htmlspecialchars($post['description']); ?></p>
 
                     <!-- Tags -->
                     <div class="card-tags">
-                        <?php if (!empty($tags_by_post[$post['id_post']])): ?>
-                            <?php foreach ($tags_by_post[$post['id_post']] as $tag): ?>
-                                <span class="tag" style="background-color: <?php echo strtolower($tag['color']); ?>;">
-                                    <?php echo htmlspecialchars($tag['name']); ?>
-                                </span>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <span class="tag tag-empty">No tags</span>
-                        <?php endif; ?>
+
                     </div>
 
                     <div class="card-footer">
                         <span class="price"><?php echo htmlspecialchars($post['author']) ?></span>
-                        <button class="details-btn">Details →</button>
+                        <button class="details-btn">Details</button>
                     </div>
                 </div>
             </div>
