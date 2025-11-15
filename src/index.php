@@ -26,26 +26,40 @@ require_once 'includes/fetch_posts.php';
    <div class="cards-grid">
     <?php if(!empty($posts)): ?>
         <?php foreach($posts as $post): // $posts is taken from includes/fetch_posts.php ?>
+
             <div class="card">
+
                 <div class="card-image">
                     <img src="<?php echo htmlspecialchars($post['thumbnail']) ?>" alt="<?php echo htmlspecialchars($post['thumbnail_alt']) ?>">
-                    <div class="rating">Soon</div>
+                    <div class="rating"><?php echo htmlspecialchars($post['rating']) ?>/5</div>
                 </div>
+
                 <div class="card-content">
-                    <h3 class="card-title"><?php echo htmlspecialchars($post['title']) ?></h3>
-                    <div class="card-location">Written by <img class="profile-picture" src="<?php echo htmlspecialchars($post['profile_picture']); ?>" alt="<?php echo htmlspecialchars($post['author']); ?>"> <?php echo htmlspecialchars($post['author']); ?></div>
+                    <h3 class="card-title"><?php echo htmlspecialchars($post['title']) ?></h3   >
+                    <div class="card-location">Written by <img class="profile-picture" src="<?php echo htmlspecialchars($post['profile_picture']); ?>" alt=""> <?php echo htmlspecialchars($post['author']); ?> - <?php echo htmlspecialchars($post['created_at']); ?></div>
                     <p class="card-description"><?php echo htmlspecialchars($post['description']); ?></p>
 
                     <!-- Tags -->
                     <div class="card-tags">
+                        <?php
+                        if (!empty($post['tags'])) {
+                            $tags = array_map('trim', explode(',', $post['tags']));
+                            foreach ($tags as $tag) {
+                                if ($tag === '') continue;
+                                echo '<span class="tag">' . htmlspecialchars($tag) . '</span> ';
+                            }
+                        }
+                        ?>
 
                     </div>
 
                     <div class="card-footer">
-                        <span class="price"><?php echo htmlspecialchars($post['author']) ?></span>
+                        <span class="price">Soon</span>
                         <button class="details-btn">Details</button>
                     </div>
                 </div>
+
+                
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
